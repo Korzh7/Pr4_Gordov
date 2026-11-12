@@ -1,0 +1,26 @@
+﻿<Window x:Class="Pr4_Gordov.WPF.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Маркетплейс GMWOG - Авторизация" Height="420" Width="380"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Вход в GMWOG" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,20"/>
+
+            <TextBlock Text="Логин:"/>
+            <TextBox x:Name="LoginBox" Margin="0,5,0,10" Height="26" VerticalContentAlignment="Center"/>
+
+            <TextBlock Text="Пароль:"/>
+            <PasswordBox x:Name="PasswordBox" Margin="0,5,0,10" Height="26" VerticalContentAlignment="Center"/>
+
+            <TextBlock x:Name="ConfirmPasswordLabel" Text="Повторите пароль:" Visibility="Collapsed"/>
+            <PasswordBox x:Name="ConfirmPasswordBox" Margin="0,5,0,10" Height="26" VerticalContentAlignment="Center" Visibility="Collapsed"/>
+
+            <TextBlock x:Name="ErrorText" Foreground="Red" TextWrapping="Wrap" Margin="0,0,0,10" Visibility="Collapsed"/>
+
+            <Button x:Name="LoginBtn" Content="Войти" Height="30" Margin="0,0,0,5" Click="LoginBtn_Click"/>
+            <Button x:Name="RegisterToggleBtn" Content="Нет аккаунта? Зарегистрироваться" Height="26" Margin="0,0,0,5" Click="RegisterToggleBtn_Click"/>
+            <Button x:Name="GuestBtn" Content="Войти как гость" Height="26" Click="GuestBtn_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>
