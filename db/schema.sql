@@ -1,4 +1,10 @@
-﻿USE [Pr4_Gordov];
+﻿IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = N'Pr4_Gordov')
+BEGIN
+    CREATE DATABASE [Pr4_Gordov];
+END
+GO
+
+USE [Pr4_Gordov];
 GO
 
 EXEC sp_MSforeachtable "ALTER TABLE ? NOCHECK CONSTRAINT all";
