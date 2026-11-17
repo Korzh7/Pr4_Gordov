@@ -1,0 +1,153 @@
+﻿<Window x:Class="Pr4_Gordov.WPF.Views.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Панель администратора маркетплейса GMWOG" Height="620" Width="920"
+        WindowStartupLocation="CenterOwner">
+    <TabControl Margin="10">
+        <TabItem Header="Товары">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <Button Content="+ Добавить товар" Height="28" Padding="12,0" Margin="0,0,8,0" FontWeight="Bold" Click="AddProduct_Click"/>
+                    <Button Content="Редактировать" Height="28" Padding="12,0" Margin="0,0,8,0" Click="EditProduct_Click"/>
+                    <Button Content="Вкл/Выкл доступность" Height="28" Padding="12,0" Margin="0,0,8,0" Click="ToggleAvailability_Click"/>
+                    <Button Content="Удалить товар" Height="28" Padding="12,0" Margin="0,0,8,0" Click="DeleteProduct_Click"/>
+                    <Button Content="Обновить список" Height="28" Padding="12,0" Click="RefreshProducts_Click"/>
+                </StackPanel>
+
+                <DataGrid x:Name="AdminProductsGrid" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Title}" Width="*"/>
+                        <DataGridTextColumn Header="Категория" Binding="{Binding CategoryName}" Width="130"/>
+                        <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:N2} ₽}" Width="90"/>
+                        <DataGridTextColumn Header="В упаковке" Binding="{Binding PackageQuantity}" Width="80"/>
+                        <DataGridTextColumn Header="На складе" Binding="{Binding StockQuantity}" Width="80"/>
+                        <DataGridCheckBoxColumn Header="Доступен" Binding="{Binding IsAvailable}" Width="80"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Заказы">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid x:Name="AdminOrdersGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="№" Binding="{Binding Id}" Width="50"/>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding OrderDate, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="120"/>
+                        <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="130"/>
+                        <DataGridTextColumn Header="Тип доставки" Binding="{Binding DeliveryType}" Width="130"/>
+                        <DataGridTextColumn Header="Адрес / ПВЗ" Binding="{Binding DeliveryAddress}" Width="*"/>
+                        <DataGridTextColumn Header="Сумма" Binding="{Binding TotalCost, StringFormat={}{0:N2} ₽}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <TextBlock Text="Новый статус заказа:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <ComboBox x:Name="StatusCombo" Width="180" Height="26" Margin="0,0,10,0">
+                        <ComboBoxItem Content="Оформлен" Tag="1"/>
+                        <ComboBoxItem Content="В обработке" Tag="2" IsSelected="True"/>
+                        <ComboBoxItem Content="Передан в доставку" Tag="3"/>
+                        <ComboBoxItem Content="Готов к выдаче" Tag="4"/>
+                        <ComboBoxItem Content="Получен" Tag="5"/>
+                        <ComboBoxItem Content="Отменён" Tag="6"/>
+                    </ComboBox>
+                    <Button Content="Сменить статус" Height="26" Padding="12,0" Click="ChangeStatusBtn_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Категории">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid x:Name="CategoriesGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60"/>
+                        <DataGridTextColumn Header="Название категории" Binding="{Binding Name}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,10,0,0">
+                    <TextBlock Text="Новая категория:" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox x:Name="NewCategoryNameBox" Width="200" Height="26" Margin="0,0,8,0"/>
+                    <Button Content="Добавить категорию" Height="26" Padding="10,0" Margin="0,0,15,0" Click="AddCategory_Click"/>
+                    <Button Content="Удалить выбранную" Height="26" Padding="10,0" Click="DeleteCategory_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Пункты выдачи (ПВЗ)">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid x:Name="PickupPointsGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                        <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="200"/>
+                        <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="*"/>
+                        <DataGridTextColumn Header="Часы работы" Binding="{Binding WorkingHours}" Width="150"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                    <WrapPanel VerticalAlignment="Center">
+                        <StackPanel Margin="0,0,10,5">
+                            <TextBlock Text="Название ПВЗ:"/>
+                            <TextBox x:Name="PvzNameBox" Width="170" Height="24"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,5">
+                            <TextBlock Text="Адрес:"/>
+                            <TextBox x:Name="PvzAddressBox" Width="250" Height="24"/>
+                        </StackPanel>
+                        <StackPanel Margin="0,0,10,5">
+                            <TextBlock Text="Часы работы:"/>
+                            <TextBox x:Name="PvzHoursBox" Width="140" Height="24" Text="09:00 - 21:00"/>
+                        </StackPanel>
+                        <Button Content="Добавить ПВЗ" Height="24" Padding="10,0" Margin="0,16,10,0" Click="AddPvz_Click"/>
+                        <Button Content="Удалить выбранный" Height="24" Padding="10,0" Margin="0,16,0,0" Click="DeletePvz_Click"/>
+                    </WrapPanel>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Отзывы">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <DataGrid x:Name="ReviewsGrid" AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                        <DataGridTextColumn Header="Товар ID" Binding="{Binding ProductId}" Width="70"/>
+                        <DataGridTextColumn Header="Пользователь" Binding="{Binding UserLogin}" Width="120"/>
+                        <DataGridTextColumn Header="Оценка" Binding="{Binding Rating, StringFormat='⭐ {0}'}" Width="80"/>
+                        <DataGridTextColumn Header="Текст отзыва" Binding="{Binding Comment}" Width="*"/>
+                        <DataGridTextColumn Header="Дата" Binding="{Binding CreatedAt, StringFormat={}{0:dd.MM.yyyy HH:mm}}" Width="120"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                    <Button Content="Удалить некорректный отзыв" Height="28" Padding="15,0" Click="DeleteReview_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>
